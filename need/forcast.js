@@ -9,14 +9,15 @@ const urlForecast = 'https://api.openweathermap.org/data/2.5/forecast?q=Antanana
 const forcast = (latitude, longitude , callback) => { 
     const url = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + latitude +'&lon=' + longitude +'&appid=75ea3add99f2696449c741c0fc4e60e6&units=metric&lang=en'
 
-    request({ url: url, json: true}, (error, response) => {
+    request({ url, json: true}, (error, {body}) => {
         if(error) {
             callback('Unable to connect to weather service', undefined)
-        } else if(response.body.cod === "400") {
+        } else if(body.cod === "400") {
             callback('Unable to to find location', undefined)
         } else {
             callback(undefined, { 
-                temp: response.body.list[0].main.temp,                  city: response.body.city.name
+                temp: body.list[0].main.temp,                  
+                city: body.city.name
             })
         }
     })
